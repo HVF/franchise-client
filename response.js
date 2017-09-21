@@ -60,7 +60,7 @@ module.exports = async function response(message, ctx=localCtx){
             const schema = flatten(raw).map(table => ({
                 schema: table.tableReference.datasetId,
                 name: table.tableReference.tableId,
-                columns: table.schema.fields.map(f => f.name),
+                columns: table.schema.fields.map(f => f.name)
             }))
 
             return {schema}
