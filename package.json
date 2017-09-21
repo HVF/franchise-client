@@ -1,0 +1,27 @@
+{
+  "name": "franchise-client",
+  "version": "0.2.2",
+  "description": "database connectors for franchise",
+  "main": "rpc.js",
+  "bin": "./server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antimatter15/franchise-client.git"
+  },
+  "author": "antimatter15",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antimatter15/franchise-client/issues"
+  },
+  "homepage": "https://github.com/antimatter15/franchise-client#readme",
+  "dependencies": {
+    "@google-cloud/bigquery": "^0.9.6",
+    "mysql2": "^1.4.1",
+    "pg": "^7.1.2",
+    "tmp": "^0.0.33",
+    "ws": "^3.0.0"
+  }
+}
