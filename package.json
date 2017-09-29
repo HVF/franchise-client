@@ -3,9 +3,10 @@
   "version": "0.2.3",
   "description": "database connectors for franchise",
   "main": "rpc.js",
-  "bin": "./server.js",
+  "bin": "./lib/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src/ --out-dir=lib --presets=es2017 --no-babelrc"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,10 @@
     "pg": "^7.1.2",
     "tmp": "^0.0.33",
     "ws": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2017": "^6.24.1"
   }
 }
