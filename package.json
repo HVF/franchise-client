@@ -1,6 +1,6 @@
 {
   "name": "franchise-client",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "database connectors for franchise",
   "main": "rpc.js",
   "bin": "./lib/server.js",
