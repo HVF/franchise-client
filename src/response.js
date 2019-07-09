@@ -36,7 +36,7 @@ module.exports = async function response(message, ctx=localCtx){
 
         } else if(action == 'get_bigquery_schema') {
 
-            const get = async (o, prop, ...rest) => 
+            const get = async (o, prop, ...rest) =>
                 typeof prop === 'undefined'     ? o
                 : typeof o[prop] === 'function' ? get(await o[prop](), ...rest)
                 : Array.isArray(o[prop])        ? Promise.all(o[prop].map(sub => get(sub, ...rest)))
@@ -56,11 +56,11 @@ module.exports = async function response(message, ctx=localCtx){
                 0,
                 'getMetadata',
                 metadata => metadata[0])
-
+            const columns = table.schema ? table.schema.fields.map(f => f.name) : []
             const schema = flatten(raw).map(table => ({
                 schema: table.tableReference.datasetId,
                 name: table.tableReference.tableId,
-                columns: table.schema.fields.map(f => f.name)
+                columns,
             }))
 
             return {schema}
@@ -95,14 +95,14 @@ async function createMySQLClient(credentials){
 				return {
 					columns: field_list,
 					values: rows.map(row => field_list.map(k => row[k]))
-				}	
+				}
 			}else{
 				return {
 					columns: ['result'],
 					values: [[ rows ]]
 				}
 			}
-			
+
 		},
 		async close(){
 			return await client.end()
@@ -141,7 +141,6 @@ function createBigQueryClient(credentials){
 
         credentials.keyFilename = keyFilename
     }
-    console.log(credentials)
     const client = new BigQueryClient(credentials)
     return {
         query: (sql, {useLegacySql}) => client.query({query: sql, useLegacySql}),
