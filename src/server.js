@@ -24,4 +24,9 @@ wss.on('connection', ws => {
 		ws.send(JSON.stringify(Object.assign({id}, res)))
 
 	})
+
+	ws.on('error', err => {
+		console.log(err)
+	});
+
 })

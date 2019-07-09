@@ -6,7 +6,7 @@
   "bin": "./lib/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src/ --out-dir=lib --presets=@babel/env --no-babelrc"
+    "build": "babel src/ --out-dir=lib"
   },
   "repository": {
     "type": "git",

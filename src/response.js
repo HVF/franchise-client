@@ -3,7 +3,6 @@ const mysql = require('mysql2/promise')
 const BigQueryClient = require('@google-cloud/bigquery')
 const tmp = require('tmp')
 const fs = require('fs')
-
 const credentials = require('./credentials.js')
 
 
@@ -80,7 +79,85 @@ async function createClient(db, credentials){
 	if(db === 'postgres') return await createPostgresClient(credentials);
 	if(db === 'bigquery') return await createBigQueryClient(credentials);
 	if(db === 'mysql') return await createMySQLClient(credentials);
+    if(db === 'mongo') return await createMongoClient(credentials);
 	throw new Error('database ' + db + ' not recognized')
+}
+
+const { spawn } = require('child_process');
+const mongoShellToJSON = require('./mongo-shell').toStrict;
+
+async function createMongoClient(credentials){
+    // mongodb://[username:password@]host1[:port1][,...hostN[:portN]]][/[database][?options]]
+    let url = `mongodb://${credentials.user}${credentials.password ? (':' + credentials.password) : ''}@${credentials.host}:${credentials.port}/${credentials.database}`
+    // console.log(url)
+    // // const client = await MongoClient.connect(url, { useNewUrlParser: true })
+    // console.log('connected')
+    // const db = client.db()
+
+    const shell = spawn('mongo', [url], {
+        shell: true
+    });
+
+    let nextCallback;
+    let connectionMessage = 'End of message!'
+    let buffer = []
+
+
+    function sendMessage(query){
+        shell.stdin.write(query + '\n\n')
+        shell.stdin.write(JSON.stringify(connectionMessage) + '\n\n');
+    }
+
+
+    await new Promise((resolve, reject) => {
+        nextCallback = resolve;
+
+        shell.on('error', (data) => {
+          console.log(`error: ${data}`);
+          reject(data)
+        });
+        shell.stdout.on('data', (data) => {
+            console.log('stdout: ' + data)
+            if(data.toString().trim() == connectionMessage){
+                nextCallback(buffer)
+                nextCallback = null;
+                buffer = []
+            }else{
+                buffer.push(data.toString())
+            }
+        });
+
+        shell.stderr.on('data', (data) => {
+          console.log(`stderr: ${data}`);
+        });
+
+        shell.on('close', (code) => {
+          console.log(`child process exited with code ${code}`);
+        });
+
+        sendMessage('DBQuery.prototype.shellPrint = function(){ var results = []; while(this.hasNext()) results.push(this.next()); print(JSON.stringify(results)) }')
+    })
+
+
+    return {
+        async query(code){
+            // let results = await db.eval(code)
+            // console.log(results)
+
+            let data = await new Promise((resolve) => {
+                nextCallback = resolve;
+
+                sendMessage(code)
+            })
+
+            return JSON.parse(data.join(''));
+
+        },
+        async close(){
+            shell.kill()
+            // await client.close()
+        }
+    }
 }
 
 
