@@ -29,5 +29,6 @@
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-preset-es2017": "^6.24.1"
-  }
+  },
+  "engines": { "node": ">=8.0" }
 }
