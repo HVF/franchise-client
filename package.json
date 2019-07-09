@@ -6,7 +6,7 @@
   "bin": "./lib/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src/ --out-dir=lib --presets=es2017 --no-babelrc"
+    "build": "babel src/ --out-dir=lib --presets=@babel/env --no-babelrc"
   },
   "repository": {
     "type": "git",
@@ -25,10 +25,12 @@
     "tmp": "^0.0.33",
     "ws": "^3.0.0"
   },
-  "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2017": "^6.24.1"
+  "engines": {
+    "node": ">=8.0"
   },
-  "engines": { "node": ">=8.0" }
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.2"
+  }
 }
