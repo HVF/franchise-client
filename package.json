@@ -1,6 +1,6 @@
 {
   "name": "franchise-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "database connectors for franchise",
   "main": "rpc.js",
   "bin": "./lib/server.js",
@@ -20,10 +20,10 @@
   "homepage": "https://github.com/antimatter15/franchise-client#readme",
   "dependencies": {
     "@google-cloud/bigquery": "^0.9.6",
-    "mysql2": "^1.4.1",
-    "pg": "^7.1.2",
+    "mysql2": "^2.2.5",
+    "pg": "^8.5.1",
     "tmp": "^0.0.33",
-    "ws": "^3.0.0"
+    "ws": "^7.4.3"
   },
   "engines": {
     "node": ">=8.0"
