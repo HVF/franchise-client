@@ -55,13 +55,12 @@ module.exports = async function response(message, ctx=localCtx){
                 0,
                 'getMetadata',
                 metadata => metadata[0])
-            const columns = table.schema ? table.schema.fields.map(f => f.name) : []
+            
             const schema = flatten(raw).map(table => ({
                 schema: table.tableReference.datasetId,
                 name: table.tableReference.tableId,
-                columns,
+                columns: (table.schema && table.schema.fields ) ? table.schema.fields.map(f => f.name) : [],
             }))
-
             return {schema}
 
         } else {
@@ -84,7 +83,6 @@ async function createClient(db, credentials){
 }
 
 const { spawn } = require('child_process');
-const mongoShellToJSON = require('./mongo-shell').toStrict;
 
 async function createMongoClient(credentials){
     // mongodb://[username:password@]host1[:port1][,...hostN[:portN]]][/[database][?options]]
